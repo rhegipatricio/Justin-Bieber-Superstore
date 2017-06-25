@@ -46,3 +46,21 @@ function question1() {
 	})
 }
 
+function question2() {
+	inquirer.prompt ([
+		{
+			type: 'input',
+			message: "Quantity?",
+			name: 'userInput'
+		}
+	]).then(function (answer) {
+		connection.query("SELECT * FROM products", function (err,res){
+			for (var i = 0; i < res.length; i++)
+		{
+			if (answer.userInput === JSON.stringify(res[i].stock_quantity)) {
+				console.log('Buy')
+				}
+			}
+		});
+	});	
+}
