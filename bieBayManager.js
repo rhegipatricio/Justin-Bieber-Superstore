@@ -78,27 +78,31 @@ connection.connect(function(err) {
 		inquirer.prompt ([
 			{
 				type: 'input',
-				message: 'product to add',
-				name: 'product_name',
+				message: 'Product to add: ',
+				name: 'productName'
 			}, {
 				type: 'input',
-				message: 'price'
-				name: 'price',
+				message: 'Department: ',
+				name: 'departmentName'
 			}, {
 				type: 'input',
-				stock: 'stock',
-				name: 'stock_inventory',
+				message: 'Price: $ ',
+				name: 'price'
+			}, {
+				type: 'input',
+				message: 'Stock Quantity: ',
+				name: 'stockQuantity'
+			}, {
+				type: 'input',
+				message: 'Autograph (choice 0 or 1, 0 for no and 1 for yes) ',
+				name: 'autographed'
 			}
+		]).then(function (res) {
+			connection.query("INSERT INTO `products` (`product_name`, `department_name`, `price`, `stock_quantity`, `autographed`) VALUES (?,?,?,?,?)", [res.productName, res.departmentName, res.price, res.stockQuantity, res.autographed], function(err, data) {
 
-		connection.query("SELECT `item_id`, `product_name`, `price`, FROM `products`", function(err, data) {
-			if (err) throw err;
+				if (err) throw err;
+				console.log("New product aded to inventory in Products database");
+			})
+		})
 
-			for (var i = 0; i < data.length; i++) {
-				itemsList.push(data[i]);
-				console.log("item ID: ", itemsList[i].items_id + ":", itemsList[i].product_name);
-			}
-		})	
 	}
-});
-
-})
