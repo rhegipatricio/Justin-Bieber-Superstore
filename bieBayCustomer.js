@@ -24,48 +24,47 @@ connection.connect(function(err) {
 });
 
 function viewItems() {
-	connection.query("SELECT * FROM products", function(err, res) {
+	connection.query("SELECT `item_id`, `product_name`, `price` FROM `products`", function(err, data) {
 		if (err) throw err;
-		for (var i = 0; i < res.length; i++) {
-		console.log(res[i].item_id + '.' + res[i].product_name + '  |  Price: ' + res[i].price);
+		for (var i = 0; i < data.length; i++) {
+		itemList.push(data[i]);
+		console.log("id", itemList[i].item_id + ":", itemList[i].product_name, "$" + itemList[i].price);
 		}
-		console.log('')
-		question1()
-	});
-}
-
-function question1() {
-	inquirer.prompt([
+		inquirer.prompt([
 		{
 			type: 'input',
-			message: 'What product would you want today?',
-			name: 'userInput'
+			message: 'What product would you want today? (choose by item number)',
+			name: 'userChoice'
 		}
-	]).then(function (answer) {
-		connection.query("SELECT * FROM products", function (err,res) {
-			for (var i = 0; i < res.length; i++) {
-				if (answer.userInput === JSON.stringify(res[i].items_id)) {
-					console.log('product');
+	]).then(function (response) {
+		idChosen = response.itemChoice;
+		connection.query("SELECT `item_id`, `product_name`, `price`, `stock_quantity` FROM `products` WHERE `item_id` = ?", [idChosen], function(err, data) {
+				console.log("You have chosen", data[0].product_name, "for $" + data[0].price);
+
+				checkAmount();;
+				function checkAmount () {
+					inquirer.prompt ([
+						{
+							type: 'input',
+							message: 'What is the number of' + data[0].product.name + '\'s you want to buy?',
+							name: 'quantity'
+						}
+					]).then(function (response) {
+						quanityChosen = response.quantity;
+						if (data[0].stock_quantity > quantityChosen) {
+							total = data[0].price * quantityChosen;
+							changeStock = data[0].stock_quantity - quantityChosen;
+
+							console.log("Your amount due is: $" + total);
+							connection.query("UPDATE `products` SET `stock_quantity` = ?  WHERE `item_id` = ?", [changeStock, idChosen])
+						}
+						else {
+							console.log("Unable to complete. We do not have the sufficient inventory for your quantity request. Biebs is sorry");
+							console.log(data[0].stock_quantity, "in stock");
+							console.log("Please choose a different quanity");
+							checkAmount();
+						}
+					})
 				}
-			}
-			question2()
-		})
+			})
 	})
-}
-
-function question2() {
-	inquirer.prompt ([
-		{
-			type: 'input',
-			message: "Quantity?",
-			name: 'userInput'
-		}
-	]).then(function (answer) {
-		connection.query("SELECT * FROM products", function (err,res){
-			for (var i = 0; i < res.length; i++) {
-			if (answer.userInput === JSON.stringify(res[i].stock_quantity)) {
-				}
-			}
-		});
-	});	
-}
