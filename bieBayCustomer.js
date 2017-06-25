@@ -18,7 +18,7 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
 	if (err) throw err;
 	console.log('');
-	console.log("Bieber says What's Good?!\nProducts on Sale: ");
+	console.log("Bieber says What's Good?! Thank you for always Beliebing!\nCheck out my products on sale: ");
 	console.log('');
 	viewItems();
 	function viewItems() {
@@ -31,7 +31,7 @@ connection.connect(function(err) {
 		inquirer.prompt([
 			{
 				type: 'input',
-				message: 'What product would you want today? (choose by item number)',
+				message: 'What product would you want today? (choose by item id number)',
 				name: 'itemChoice'
 			}
 		]).then(function (response) {
@@ -62,11 +62,11 @@ connection.connect(function(err) {
 						 	total = data[0].price * quantityChosen;
 						 	changeStock = data[0].stock_quantity - quantityChosen;
 
-						 	console.log("Your amount due is: $" + total);
+						 	console.log("Your amount due is: $" + total + (". Thank you and come again!"));
 						 	connection.query("UPDATE `products` SET `stock_quantity` = ?  WHERE `item_id` = ?", [changeStock, idChosen])
 						 }
 						 else {
-						 	console.log("Unable to complete. We do not have the sufficient inventory for your quantity request. Biebs is sorry");
+						 	console.log("Unable to complete. We do not have the sufficient inventory for your quantity request. Biebs says My Bad and to choose again");
 						 	console.log("There are", data[0].stock_quantity, "in stock");
 						 	console.log("Please choose a different quantity");
 						 	checkAmount();
