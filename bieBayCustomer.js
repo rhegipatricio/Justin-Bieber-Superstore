@@ -15,3 +15,15 @@ connection.connect(function(err) {
 	console.log('');
 	viewItems()
 });
+
+function viewItems() {
+	connection.query("SELECT * FROM products", function(err, res) {
+		if (err) throw err;
+		for (var i = 0; i < res.length; i++) {
+		console.log(res[i].items_id + '.' + res[i].product_name + '  |  Price: ' + res[i].price);
+		}
+		console.log('')
+		question1()
+	});
+}
+
