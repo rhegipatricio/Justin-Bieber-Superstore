@@ -38,7 +38,7 @@ connection.connect(function(err) {
 				lowStock();
 				break;
 
-			case 'Add to Inventory';
+			case 'Add to Inventory':
 				addInventory();
 				break;
 
