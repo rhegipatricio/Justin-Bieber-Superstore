@@ -58,3 +58,13 @@ connection.connect(function(err) {
 		})
 	}
 
+	function lowStock () {
+		connection.query('SELECT `item_id`, `product_name`, `department_name`, `price`, `stock_quantity` FROM `products` WHERE `stock_quantity` < 15', function (err, data) {
+			if (err) throw err;
+
+			for (var i = 0; i < data.length; i++) {
+				console.log('Product: ', data[i].product_name + ' Stock left: ', data[i].stock_quantity);
+			}
+		})
+	}
+
