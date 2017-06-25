@@ -56,10 +56,8 @@ function question2() {
 		}
 	]).then(function (answer) {
 		connection.query("SELECT * FROM products", function (err,res){
-			for (var i = 0; i < res.length; i++)
-		{
+			for (var i = 0; i < res.length; i++) {
 			if (answer.userInput === JSON.stringify(res[i].stock_quantity)) {
-				console.log('Buy')
 				}
 			}
 		});
