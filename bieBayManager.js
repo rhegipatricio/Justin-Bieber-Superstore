@@ -31,7 +31,7 @@ connection.connect(function(err) {
 	]).then (function (res) {
 		switch (res.adminChoice) {
 			case 'View prodcuts for sale':
-				inventorySee();
+				inventorySale();
 				break;
 
 			case 'View Low Inventory':
@@ -47,3 +47,14 @@ connection.connect(function(err) {
 				break;
 		}
 	})
+
+	function inventorySale () {
+		connection.query('SELECT `item_id`, `product_name`, `department_name`, `price`, `stock_quantity` FROM `products`', function (err, data) {
+			if (err) throw err;
+
+			for (var i = 0; i < data.length; i++) {
+				console.log('ID', data[i].item_id + '  Product', data[i].product_name + ' Stock',data[i].stock_quantity)
+			}
+		})
+	}
+
