@@ -27,3 +27,22 @@ function viewItems() {
 	});
 }
 
+function question1() {
+	inquirer.prompt([
+		{
+			type: 'input',
+			message: 'What product would you want today?',
+			name: 'userInput'
+		}
+	]).then(function (answer) {
+		connection.query("SELECT * FROM products", function (err,res) {
+			for (var i = 0; i < res.length; i++) {
+				if (answer.userInput === JSON.stringify(res[i].items_id)) {
+					console.log('product');
+				}
+			}
+			question2()
+		})
+	})
+}
+
