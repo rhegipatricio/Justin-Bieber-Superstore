@@ -14,3 +14,6 @@ var connection = mysql.createConnection({
 	password: "",
 	database: "biebay"
 })
+
+connection.connect(function(err) {
+	if (err) throw err;
