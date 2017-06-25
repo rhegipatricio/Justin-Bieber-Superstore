@@ -51,7 +51,7 @@ connection.connect(function(err) {
 					inquirer.prompt ([
 						{
 							type: 'input',
-							message: 'What is the number of' + data[0].product.name + '\'s you want to buy?',
+							message: 'What is the number of' + data[0].product.nameå + '\'s you want to buy?',
 							name: 'quantity'
 						}
 					]).then(function (response) {
