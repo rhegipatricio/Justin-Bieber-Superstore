@@ -39,11 +39,11 @@ connection.connect(function(err) {
 				break;
 
 			case 'Add to Inventory';
-
+				addInventory();
 				break;
 
 			case 'Add New Product':
-
+				addProduct();
 				break;
 		}
 	})
@@ -68,3 +68,37 @@ connection.connect(function(err) {
 		})
 	}
 
+	function addInventory () {
+		connection.query('SELECT `item_id`, `product_name`, `department_name`, `price`, `')		
+			}
+		})
+	}
+
+	function addProduct () {
+		inquirer.prompt ([
+			{
+				type: 'input',
+				message: 'product to add',
+				name: 'product_name',
+			}, {
+				type: 'input',
+				message: 'price'
+				name: 'price',
+			}, {
+				type: 'input',
+				stock: 'stock',
+				name: 'stock_inventory',
+			}
+
+		connection.query("SELECT `item_id`, `product_name`, `price`, FROM `products`", function(err, data) {
+			if (err) throw err;
+
+			for (var i = 0; i < data.length; i++) {
+				itemsList.push(data[i]);
+				console.log("item ID: ", itemsList[i].items_id + ":", itemsList[i].product_name);
+			}
+		})	
+	}
+});
+
+})
