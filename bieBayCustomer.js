@@ -32,7 +32,7 @@ connection.connect(function(err) {
 			{
 				type: 'input',
 				message: 'What product would you want today? (choose by item number)',
-				name: 'userChoice'
+				name: 'itemChoice'
 			}
 		]).then(function (response) {
 			idChosen = response.itemChoice;
@@ -42,8 +42,10 @@ connection.connect(function(err) {
 						initialPromopt()
 					}
 					else {
-						console.log("You have chosen", data[0].product_name, "for $" + data[0].price);
+						console.log("You have chosen product", data[0].product_name, "for $" + data[0].price);
 						checkAmount();
+						// console.log()
+						// console.log(response.itemChoice)
 					}
 
 				
@@ -51,25 +53,25 @@ connection.connect(function(err) {
 					inquirer.prompt ([
 						{
 							type: 'input',
-							message: 'What is the number of' + data[0].product.nameå + '\'s you want to buy?',
+							message: 'What is the number of ' + data[0].product_name + '\'s you want to buy?',
 							name: 'quantity'
 						}
 					]).then(function (response) {
-						quanityChosen = response.quantity;
-						if (data[0].stock_quantity > quantityChosen) {
-							total = data[0].price * quantityChosen;
-							changeStock = data[0].stock_quantity - quantityChosen;
+						quantityChosen = response.quantity;
+						 if (data[0].stock_quantity > quantityChosen) {
+						 	total = data[0].price * quantityChosen;
+						 	changeStock = data[0].stock_quantity - quantityChosen;
 
-							console.log("Your amount due is: $" + total);
-							connection.query("UPDATE `products` SET `stock_quantity` = ?  WHERE `item_id` = ?", [changeStock, idChosen])
-						}
-						else {
-							console.log("Unable to complete. We do not have the sufficient inventory for your quantity request. Biebs is sorry");
-							console.log(data[0].stock_quantity, "in stock");
-							console.log("Please choose a different quanity");
-							checkAmount();
-						}
-					})
+						 	console.log("Your amount due is: $" + total);
+						 	connection.query("UPDATE `products` SET `stock_quantity` = ?  WHERE `item_id` = ?", [changeStock, idChosen])
+						 }
+						 else {
+						 	console.log("Unable to complete. We do not have the sufficient inventory for your quantity request. Biebs is sorry");
+						 	console.log("There are", data[0].stock_quantity, "in stock");
+						 	console.log("Please choose a different quantity");
+						 	checkAmount();
+						 }
+					}) 
 				}
 			})
 		})
