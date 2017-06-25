@@ -4,8 +4,9 @@ var inquirer = require("inquirer");
 var connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
-	user: "root"
-	database: "bieBay"
+	user: "root",
+	password: "",
+	database: "biebay"
 });
 
 connection.connect(function(err) {
@@ -20,7 +21,7 @@ function viewItems() {
 	connection.query("SELECT * FROM products", function(err, res) {
 		if (err) throw err;
 		for (var i = 0; i < res.length; i++) {
-		console.log(res[i].items_id + '.' + res[i].product_name + '  |  Price: ' + res[i].price);
+		console.log(res[i].item_id + '.' + res[i].product_name + '  |  Price: ' + res[i].price);
 		}
 		console.log('')
 		question1()
