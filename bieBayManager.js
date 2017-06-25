@@ -18,16 +18,32 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
 	if (err) throw err;
 
-	console.log('     ADMIN LOGIN\n');
-	initialPrompt();
+	console.log('ADMIN LOGIN');
+	
 
-	function initialPrompt () {
-		connection.query('SELECT `item_id`, `product_name`, `price` FROM `products`', function (err, data) {
-			if (err) throw err;
-			for (var i = 0; i < data.length; i++) {
-				itemList.push(data[i]);
-				console.log('id', itemsList[i].items_id + ':', itemsList[i].product_name, '$' + itemList[i].price);
-			}
-			inquirer.prompt([
+	inquirer.prompt ([
+		{
+			type: 'list',
+			message: 'Choose a selection',
+			name: 'adminChoice',
+			choices: ["View products for sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
+		}
+	]).then (function (res) {
+		switch (res.adminChoice) {
+			case 'View prodcuts for sale':
+				inventorySee();
+				break;
 
-	}
+			case 'View Low Inventory':
+				lowStock();
+				break;
+
+			case 'Add to Inventory';
+
+				break;
+
+			case 'Add New Product':
+
+				break;
+		}
+	})
