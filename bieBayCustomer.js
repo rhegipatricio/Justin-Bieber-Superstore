@@ -8,3 +8,10 @@ var connection = mysql.createConnection({
 	database: "bieBay"
 });
 
+connection.connect(function(err) {
+	if (err) throw err;
+	console.log('');
+	console.log("Bieber says What's Good?!\nProducts on Sale: ");
+	console.log('');
+	viewItems()
+});
