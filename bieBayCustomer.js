@@ -13,35 +13,40 @@ var connection = mysql.createConnection({
 	user: "root",
 	password: "",
 	database: "biebay"
-});
+})
 
 connection.connect(function(err) {
 	if (err) throw err;
 	console.log('');
 	console.log("Bieber says What's Good?!\nProducts on Sale: ");
 	console.log('');
-	viewItems()
-});
-
-function viewItems() {
-	connection.query("SELECT `item_id`, `product_name`, `price` FROM `products`", function(err, data) {
-		if (err) throw err;
-		for (var i = 0; i < data.length; i++) {
-		itemList.push(data[i]);
-		console.log("id", itemList[i].item_id + ":", itemList[i].product_name, "$" + itemList[i].price);
+	viewItems();
+	function viewItems() {
+		connection.query("SELECT `item_id`, `product_name`, `price` FROM `products`", function(err, data) {
+			if (err) throw err;
+			for (var i = 0; i < data.length; i++) {
+				itemList.push(data[i]);
+				console.log("id", itemList[i].item_id + ":", itemList[i].product_name, "$" + itemList[i].price);
 		}
 		inquirer.prompt([
-		{
-			type: 'input',
-			message: 'What product would you want today? (choose by item number)',
-			name: 'userChoice'
-		}
-	]).then(function (response) {
-		idChosen = response.itemChoice;
-		connection.query("SELECT `item_id`, `product_name`, `price`, `stock_quantity` FROM `products` WHERE `item_id` = ?", [idChosen], function(err, data) {
-				console.log("You have chosen", data[0].product_name, "for $" + data[0].price);
+			{
+				type: 'input',
+				message: 'What product would you want today? (choose by item number)',
+				name: 'userChoice'
+			}
+		]).then(function (response) {
+			idChosen = response.itemChoice;
+			connection.query("SELECT `item_id`, `product_name`, `price`, `stock_quantity` FROM `products` WHERE `item_id` = ?", [idChosen], function(err, data) {
+					if (idChosen > itemList.length) {
+						console.log('\nID invalid. Please enter one from list\n');
+						initialPromopt()
+					}
+					else {
+						console.log("You have chosen", data[0].product_name, "for $" + data[0].price);
+						checkAmount();
+					}
 
-				checkAmount();;
+				
 				function checkAmount () {
 					inquirer.prompt ([
 						{
@@ -67,4 +72,7 @@ function viewItems() {
 					})
 				}
 			})
+		})
 	})
+	}
+})
