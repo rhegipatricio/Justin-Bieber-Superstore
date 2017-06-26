@@ -1,6 +1,10 @@
+//required to call for mysql and inquirer
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+
+//array for data to be pushed into for manager to add inventory
 var listInventory = [];
+
 //connects to my created biebay database
 var connection = mysql.createConnection({
     host: "localhost",
@@ -9,6 +13,7 @@ var connection = mysql.createConnection({
     password: "",
     database: "biebay"
 });
+//shows that the manager has logged in and to choose one of the four options
 connection.connect(function(err) {
     if (err) throw err;
     console.log('Manager login');
@@ -19,6 +24,7 @@ connection.connect(function(err) {
             name: 'adminChoice',
             choices: ["View Current Products", "View Low Inventory", "Add Items to Inventory", "Add New Product"]
         }
+    //switch statement for four options
     ]).then(function (res) {
         switch (res.adminChoice) {
             case 'View Current Products':
@@ -35,6 +41,7 @@ connection.connect(function(err) {
                 break;
         }
     });
+    //Shows Items In Stock with id, product name, department, price, and stock from the Products database
     function inventorySale() {
         connection.query('SELECT `item_id`, `product_name`, `department_name`, `price`, `stock_quantity` FROM `products`', function (err, data) {
             if (err) throw err;
@@ -45,6 +52,7 @@ connection.connect(function(err) {
             }
         })
     }
+    //function that shows the low stock, anything less than 15 after customer transactions
     function lowStock() {
         connection.query('SELECT `item_id`, `product_name`, `department_name`, `price`, `stock_quantity` FROM `products` WHERE `stock_quantity` < 15', function (err, data) {
             if (err) throw err;
@@ -53,12 +61,14 @@ connection.connect(function(err) {
             }
         })
     }
+    //function for the manager to add and change product quantity
     function addInventory() {
         connection.query('SELECT `product_name` FROM `products`', function (err, data) {
             if (err) throw err;
             for (var i = 0; i < data.length; i++) {
                 listInventory.push(data[i].product_name)
             }
+            //inquirer prompts for manager 
             inquirer.promopt([
                 {
                     type: 'list',
@@ -70,6 +80,7 @@ connection.connect(function(err) {
                     message: 'Add to product stock: ',
                     name: 'stockQuantity'
                 }
+            //tells manager stock has updated    
             ]).then(function (res) {
                 connection.query('UPDATE `products` SET `stock_quantity` = ? WHERE `product_name` = ?', [res.stockQuantity, res.productChoice], function (err, data) {
                     if (err) throw err;
@@ -78,6 +89,7 @@ connection.connect(function(err) {
             })
         })
     }
+    //function to add a new product to the products database
     function addProduct() {
         inquirer.prompt([
             {
@@ -101,6 +113,7 @@ connection.connect(function(err) {
                 message: 'Autograph (choice 0 or 1, 0 for Yes and 1 for No) ',
                 name: 'autograph'
             }
+        //message confirming that the item has been added
         ]).then(function (res) {
             connection.query("INSERT INTO `products` (`product_name`, `department_name`, `price`, `stock_quantity`, `autograph`) VALUES (?,?,?,?,?)", [res.productName, res.departmentName, res.price, res.stockQuantity, res.autograph], function (err, data) {
                 if (err) throw err;
