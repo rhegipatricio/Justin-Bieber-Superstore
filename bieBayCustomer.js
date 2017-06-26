@@ -39,13 +39,10 @@ connection.connect(function(err) {
 			connection.query("SELECT `item_id`, `product_name`, `price`, `stock_quantity` FROM `products` WHERE `item_id` = ?", [idChosen], function(err, data) {
 					if (idChosen > itemList.length) {
 						console.log('\nID invalid. Please enter one from list\n');
-						//initialPrompt()
 					}
 					else {
 						console.log("You have chosen product", data[0].product_name, "for $" + data[0].price);
 						checkAmount();
-						// console.log()
-						// console.log(response.itemChoice)
 					}
 
 				
