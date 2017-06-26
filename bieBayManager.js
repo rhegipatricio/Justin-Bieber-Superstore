@@ -117,7 +117,7 @@ connection.connect(function(err) {
         ]).then(function (res) {
             connection.query("INSERT INTO `products` (`product_name`, `department_name`, `price`, `stock_quantity`, `autograph`) VALUES (?,?,?,?,?)", [res.productName, res.departmentName, res.price, res.stockQuantity, res.autograph], function (err, data) {
                 if (err) throw err;
-                console.log("New product aded to inventory in Products database");
+                console.log("New product added to inventory in Products database");
             })
         })
     }
