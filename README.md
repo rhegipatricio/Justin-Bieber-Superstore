@@ -32,6 +32,12 @@ This is an example of an error in which the customer is trying to buy more quant
 The Database is now updated to show the current amount after the two transactions. The hats are down to 26 from 30 and the posters are down to 40 from the original 50.
 
 
+
+
+
+
+
+
 MANAGER VIEW
 
 Command line command to run app with manager view
