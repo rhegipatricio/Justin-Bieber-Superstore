@@ -4,7 +4,7 @@ OVERVIEW
 
 For this project, a mock Justin Bieber online store app was made that runs on the backend and from the command line. Here a customer may purchase select merchandise. A manager may also login to be able to see how merchandise is selling as well as add to existing quantity amount and add new products. 
 
-Here is the demonstration video link: [![IMAGE ALT TEXT](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](http://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE "Video Title")
+Here is the demonstration video link: [![IMAGE ALT TEXT](/images_for_readmebiebay_tutorial_screenshot_link.png)](https://www.youtube.com/watch?v=k0D0IMgQhIQ "bieBay Tutorial")
 
 CUSTOMER VIEW
 
